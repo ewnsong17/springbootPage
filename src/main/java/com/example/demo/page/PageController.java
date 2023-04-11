@@ -1,8 +1,16 @@
 package com.example.demo.page;
 
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.google.gson.Gson;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,13 +22,18 @@ public class PageController {
     @RequestMapping("index")
     public ModelAndView getPageIndex(ModelAndView mav)
     {
+        log.info("getPageIndex() function Executed.");
         mav.setViewName("content/testPage");
         return mav;
     }
     
-    @RequestMapping("test")
-    public ModelAndView getPageController(ModelAndView mav)
+    @RequestMapping(value = "get")
+    public void getPageController(HttpServletResponse response) throws IOException
     {
+        Gson gson = new Gson();
+
+        Map<String, Object> jsonMap = new HashMap<>();
+        
         log.info("getPageController() function Executed.");
 
         String[] season_arr = {"봄", "여름", "가을", "겨울"};
@@ -34,8 +47,8 @@ public class PageController {
             emotion_arr[(int) (Math.random() * emotion_arr.length)] + " " +
             target_arr[(int) (Math.random() * target_arr.length)];
 
-        mav.setViewName("content/testPage");
-        mav.addObject("comment", comment);
-        return mav;
+        jsonMap.put("comment", comment);
+
+        response.getWriter().print(gson.toJson(jsonMap));
     }
 }
