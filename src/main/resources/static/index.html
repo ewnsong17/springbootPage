@@ -1,12 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Document</title>
-    </head>
-    <body>
-        Hello World!
-    </body>
+<html xmlns:th="http://www.thymeleaf.org">
+    <th:block th:fragment="headerFragment">
+        <head>
+            <title>Maple</title>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1"/>
+            <!-- <link rel="stylesheet" href="/css/bootstrap.min.css"> -->
+
+            <!-- script -->
+            <script src="scripts/search.js"></script>
+            <!-- cash dom -->
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/cash/8.1.4/cash.min.js"></script>
+            <!-- axios -->
+            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+        </head>
+
+        <body>
+            검색할 캐릭터 닉네임을 입력하세요 : <input type="text" id="name"> <input type="button" value="검색" onclick="fnSearch()">
+        </body>
+
+        <footer>
+            <div class="mt-5">
+                <div class="text-center">
+                    <p>
+                        <small class="text-muted">Copyright 2023</small>
+                    </p>
+                </div>
+            </div>
+        </footer>
+    </th:block>
 </html>

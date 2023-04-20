@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.google.gson.Gson;
 
 import lombok.extern.slf4j.Slf4j;
@@ -27,45 +28,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/page")
 public class PageController {
 
-    @GetMapping("index")
-    public ModelAndView getPageIndex(ModelAndView mav)
-    {
-        log.info("getPageIndex() function Executed.");
-        mav.setViewName("content/testPage");
- 
-        return mav;
-    }
-    
-    @PostMapping("get")
-    public void getPageController(HttpServletResponse response) throws IOException
-    {
-        Gson gson = new Gson();
-
-        Map<String, Object> jsonMap = new HashMap<>();
-        
-        log.info("getPageController() function Executed.");
-
-        String[] season_arr = {"봄", "여름", "가을", "겨울"};
-
-        String[] emotion_arr = {"차가운", "따뜻한", "부드러운", "감정적인", "카리스마 있는", "침착한", "열정적인"};
-
-        String[] target_arr = {"고양이", "강아지", "토끼", "호랑이", "사자", "말", "고슴도치", "햄스터", "거북이"};
-
-        String comment = 
-            season_arr[(int) (Math.random() * season_arr.length)] + "의 " + 
-            emotion_arr[(int) (Math.random() * emotion_arr.length)] + " " +
-            target_arr[(int) (Math.random() * target_arr.length)];
-
-        jsonMap.put("comment", comment);
-
-        response.getWriter().print(gson.toJson(jsonMap));
-    }
-
     @GetMapping("search")
-    public ModelAndView getSearchPlayer(@RequestParam String name, ModelAndView mav) throws IOException
+    public ModelAndView getSearchPlayer(@RequestParam(required = false) String name, ModelAndView mav) throws IOException
     {
+        log.info(name);
+
         mav.setViewName("content/failed");
+
         if (name == null || name.isEmpty()) {
+            log.error("name is null or empty");
             return mav;
         }
 
@@ -76,6 +47,7 @@ public class PageController {
         Element rankTable = doc.body().selectFirst(".rank_table");
 
         if (rankTable == null) {
+            log.error("rankTable is null or empty");
             return mav;
         }
 
@@ -85,17 +57,20 @@ public class PageController {
             Elements tdList = tr.getElementsByTag("td");
 
             if (tdList.size() < 6) {
+                log.warn("tdList size is not enough. passed");
                 continue;
             }
 
             if (tdList.html().toString().toLowerCase().contains(name.toLowerCase())) {
                 String imgSrc = tdList.get(1).getElementsByTag("img").get(0).attr("src");
                 if (imgSrc == null) {
+                    log.warn("character image is not valid. passed");
                     continue;
                 }
 
                 String[] nameAndJob = tdList.get(1).text().split(" ", 2);
                 if (nameAndJob.length < 2) {
+                    log.warn("cannot parse character name or job. passed");
                     continue;
                 }
 
@@ -117,12 +92,26 @@ public class PageController {
                 mav.addObject("exp", exp);
                 mav.addObject("fame", fame);
                 mav.addObject("guild", guild);
-                mav.setViewName("content/search");
-
+                
+                mav.setViewName("content/result");
                 return mav;
             }
         }
+        
+        return mav;
+    }
 
+    @GetMapping("result")
+    public ModelAndView searchResult(@RequestParam ModelAndView mav) 
+    {
+        mav.setViewName("content/result");
+        return mav;
+    }
+
+    @GetMapping("failed")
+    public ModelAndView searchFailed(ModelAndView mav)
+    {
+        mav.setViewName("content/failed");
         return mav;
     }
 }
