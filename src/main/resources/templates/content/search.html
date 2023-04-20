@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="layout/default_layout">
+    <th:block layout:fragment="content">
+        <span><img class="" th:src="${imgSrc}"></span>
+        <p>닉네임 : <span th:text="${name}"></span></p>
+        <p>직업 : <span th:text="${job}"></span></p>
+        <p>레벨 : <span th:text="${level}"></span></p>
+        <p>경험치 : <span th:text="${exp}"></span></p>
+        <p>인기도 : <span th:text="${fame}"></span></p>
+        <p>길드 : <span th:text="${guild}"></span></p>
+    </th:block>
+</html>
