@@ -3,10 +3,6 @@ package com.example.demo.page;
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.servlet.http.HttpServletResponse;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -14,12 +10,9 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.google.gson.Gson;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -31,12 +24,15 @@ public class PageController {
     @GetMapping("search")
     public ModelAndView getSearchPlayer(@RequestParam(required = false) String name, ModelAndView mav) throws IOException
     {
-        log.info(name);
-
-        mav.setViewName("content/failed");
-
+        mav.setViewName("content/result");
+        mav.addObject("search", "false");
         if (name == null || name.isEmpty()) {
             log.error("name is null or empty");
+            return mav;
+        }
+
+        if (!name.matches("^[가-힣0-9a-zA-Z]+$")) {
+            log.error("name not matches the regex");
             return mav;
         }
 
@@ -92,26 +88,13 @@ public class PageController {
                 mav.addObject("exp", exp);
                 mav.addObject("fame", fame);
                 mav.addObject("guild", guild);
+
+                mav.addObject("search", "true");
                 
-                mav.setViewName("content/result");
                 return mav;
             }
         }
         
-        return mav;
-    }
-
-    @GetMapping("result")
-    public ModelAndView searchResult(@RequestParam ModelAndView mav) 
-    {
-        mav.setViewName("content/result");
-        return mav;
-    }
-
-    @GetMapping("failed")
-    public ModelAndView searchFailed(ModelAndView mav)
-    {
-        mav.setViewName("content/failed");
         return mav;
     }
 }
