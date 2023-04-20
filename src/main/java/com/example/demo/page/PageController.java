@@ -31,7 +31,7 @@ public class PageController {
             return mav;
         }
 
-        if (!name.matches("^[가-힣0-9a-zA-Z]+$")) {
+        if (!name.matches("^[가-힣0-9a-zA-Z]+$") || name.getBytes("EUC-KR").length < 4) {
             log.error("name not matches the regex");
             return mav;
         }
