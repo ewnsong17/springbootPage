@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+    layout:decorate="layout/default_layout">
+    <th:block layout:fragment="content">
+        <script src="/scripts/cube.js"></script>
+        <p><img class="" src="/images/red_cube.png" width="70px" height="70px"></p>
+        <p>레드 큐브</p>
+        <p>현재 등급 : 레어</p>
+        <p>현재 사용 횟수 : <span id="cnt">0</span>회</p>
+        <input type="button" value="사용하기" onclick="fnUseCube()">
+    </th:block>
+</html>

@@ -13,6 +13,8 @@
             <p>길드 : <span th:text="${guild}"></span></p>
         </div>
         <div th:if="${search == 'false'}">
+            <script src="/scripts/search.js"></script>
+            <p>검색할 캐릭터 닉네임을 입력하세요 : <input type="text" id="name"> <input type="button" value="검색" onclick="fnSearch()"></p>
             <p style="color: red;">검색 결과가 없습니다. 다시 시도해 주세요.</p>
         </div>
     </th:block>

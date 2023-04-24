@@ -1,8 +1,12 @@
-package com.example.demo.page;
+package com.example.demo.controller.page;
 
 import java.io.IOException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -10,9 +14,14 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.example.demo.model.CubeRequest;
+import com.google.gson.Gson;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,9 +30,33 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("/page")
 public class PageController {
 
+    @GetMapping("cube")
+    public ModelAndView getPageCube(ModelAndView mav)
+    {
+        log.info("function getPageCube() started");
+        mav.setViewName("content/cube");
+        return mav;
+    }
+
+    @PostMapping("useCube")
+    public void getUseCube(@ModelAttribute CubeRequest cubeData, HttpServletResponse response) throws IOException
+    {
+        Gson gson = new Gson();
+
+        Map<String, Object> jsonData = new HashMap<>();
+        
+        log.info("cube Data : " + cubeData.toString());
+
+        cubeData.setCubeCnt(cubeData.getCubeCnt() + 1);
+        jsonData.put("cubeResult", cubeData);
+
+        response.getWriter().print(gson.toJson(jsonData));
+    }
+
     @GetMapping("search")
     public ModelAndView getSearchPlayer(@RequestParam(required = false) String name, ModelAndView mav) throws IOException
     {
+        log.info("function getSearchPlayer() started");
         mav.setViewName("content/result");
         mav.addObject("search", "false");
         if (name == null || name.isEmpty()) {

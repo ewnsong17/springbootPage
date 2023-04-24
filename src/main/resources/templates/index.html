@@ -3,6 +3,10 @@
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
     layout:decorate="layout/default_layout">
     <th:block layout:fragment="content">
-        <!-- 내용 추가 -->
+        <script src="/scripts/search.js"></script>
+        <p>검색할 캐릭터 닉네임을 입력하세요 : <input type="text" id="name"> <input type="button" value="검색" onclick="fnSearch()"></p>
+
+        <script src="/scripts/cube.js"></script>
+        <span>큐브 테스트 하러 가기 -> <input type="button" value="이동하기" onclick="fnMoveCube()"></span>
     </th:block>
 </html>
