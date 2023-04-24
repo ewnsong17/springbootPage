@@ -1,0 +1,21 @@
+{
+    "red_cube" : {
+        "up_info" : {
+            "epic" : "6.0",
+            "unique" : "1.8",
+            "legendary" : "0.3"
+        },
+        "option_r_info" : {
+            "first" : "100",
+            "second" : "90",
+            "third" : "1"
+        }
+    },
+    "black_cube" : {
+        "up_info" : {
+            "epic" : "15.0",
+            "unique" : "3.5",
+            "legendary" : "1.4"
+        }
+    }
+}

@@ -8,6 +8,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.tomcat.util.json.ParseException;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -20,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.example.demo.model.CubeRequest;
+import com.example.demo.model.page.CubeRequest;
 import com.google.gson.Gson;
 
 import lombok.extern.slf4j.Slf4j;
@@ -39,15 +40,15 @@ public class PageController {
     }
 
     @PostMapping("useCube")
-    public void getUseCube(@ModelAttribute CubeRequest cubeData, HttpServletResponse response) throws IOException
+    public void getUseCube(@ModelAttribute CubeRequest cubeData, HttpServletResponse response) throws IOException, ParseException
     {
         Gson gson = new Gson();
 
         Map<String, Object> jsonData = new HashMap<>();
-        
-        log.info("cube Data : " + cubeData.toString());
 
-        cubeData.setCubeCnt(cubeData.getCubeCnt() + 1);
+        log.info("cube Data : " + cubeData.toString());
+        cubeData.tryRePotential();
+
         jsonData.put("cubeResult", cubeData);
 
         response.getWriter().print(gson.toJson(jsonData));
